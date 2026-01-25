@@ -1,0 +1,91 @@
+import { Component, resource, signal } from '@angular/core';
+
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    company: { name: string };
+}
+
+@Component({
+    selector: 'app-resource-demo',
+    standalone: true,
+    template: `
+    <div class="max-w-4xl mx-auto space-y-8 animate-fade-in">
+      
+      <div class="pb-6 border-b border-[#2a2d35] flex justify-between items-center">
+        <div>
+          <h2 class="text-3xl font-bold text-white mb-2">Resource API</h2>
+          <p class="text-gray-400">Async data fetching evolved. No manual subscriptions.</p>
+        </div>
+        
+        <button 
+          (click)="usersResource.reload()" 
+          class="px-4 py-2 bg-[#2a2d35] hover:bg-[#32363e] text-white rounded-lg flex items-center gap-2 transition-colors"
+          [disabled]="usersResource.isLoading()"
+        >
+          <span [class.animate-spin]="usersResource.isLoading()">↻</span>
+          {{ usersResource.isLoading() ? 'Reloading...' : 'Reload Data' }}
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      @if (usersResource.isLoading()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (i of [1,2,3,4]; track i) {
+            <div class="p-6 bg-[#181a1f] border border-[#2a2d35] rounded-xl h-32 animate-pulse">
+               <div class="h-4 bg-[#2a2d35] rounded w-1/3 mb-4"></div>
+               <div class="h-3 bg-[#2a2d35] rounded w-1/2"></div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Error State -->
+      @if (usersResource.error()) {
+        <div class="p-6 bg-red-900/10 border border-red-500/20 rounded-xl text-red-400 flex items-center gap-3">
+          <span class="text-2xl">⚠️</span>
+          <span>Failed to load users: {{ usersResource.error() }}</span>
+        </div>
+      }
+
+      <!-- Success State (Data) -->
+      @if (usersResource.value()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (user of usersResource.value(); track user.id) {
+            <div class="p-6 bg-[#181a1f] border border-[#2a2d35] rounded-xl hover:border-pink-500/30 transition-all group">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="font-bold text-white group-hover:text-pink-400 transition-colors">{{ user.name }}</h3>
+                <span class="text-xs text-gray-500 bg-[#0f1115] px-2 py-1 rounded">ID: {{ user.id }}</span>
+              </div>
+              <p class="text-sm text-gray-400 flex items-center gap-2 mb-1">
+                <span>📧</span> {{ user.email }}
+              </p>
+              <p class="text-sm text-gray-500 flex items-center gap-2">
+                <span>🏢</span> {{ user.company.name }}
+              </p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  `,
+    styles: [`
+    .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  `]
+})
+export class ResourceDemoComponent {
+    // The 'resource' API handles the async loading lifecycle automatically.
+    // It provides .value() (data), .status() (idle/loading/error/resolved), and .error().
+    usersResource = resource({
+        loader: async () => {
+            // Simulate network delay for demo purposes (optional)
+            await new Promise(r => setTimeout(r, 1000));
+
+            const res = await fetch('https://jsonplaceholder.typicode.com/users');
+            if (!res.ok) throw new Error('Network error');
+            return (await res.json()) as User[];
+        }
+    });
+}

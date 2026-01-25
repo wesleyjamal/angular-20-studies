@@ -53,6 +53,13 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
             <span class="mr-3 text-lg opacity-70 group-hover:opacity-100 transition-opacity">🔀</span>
             Control Flow
           </a>
+
+          <a routerLink="/resource" 
+             routerLinkActive="bg-[#2a2d35] text-white border-l-4 border-pink-500"
+             class="group flex items-center px-4 py-2.5 text-sm font-medium rounded-r-lg hover:bg-[#22252b] hover:text-white transition-all border-l-4 border-transparent">
+            <span class="mr-3 text-lg opacity-70 group-hover:opacity-100 transition-opacity">⚡</span>
+            Resource API
+          </a>
         </nav>
 
         <!-- Footer / Status -->
