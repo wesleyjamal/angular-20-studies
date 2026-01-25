@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Angular.dev inspired palette */
+  --bg-primary: #0f1115;
+  --bg-secondary: #181a1f;
+  --text-primary: #e3e3e3;
+  --text-secondary: #a8b3cf;
+  
+  --accent-pink: #ff296d;
+  --accent-red: #d20e48;
+  --accent-purple: #7c2d8a;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Utilities that might not be in default Tailwind config yet if we didn't fully customize tailwind.config.js */
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.angular-gradient-text {
+  background: linear-gradient(to right, #ff31d9, #ff5be2, #ff296d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.angular-gradient-bg {
+  background: linear-gradient(135deg, #1f1128 0%, #0f1115 100%);
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -10px rgba(255, 41, 109, 0.2);
+  border-color: rgba(255, 41, 109, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

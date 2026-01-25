@@ -1,0 +1,173 @@
+import { Component, signal } from '@angular/core';
+
+interface User {
+  id: number;
+  name: string;
+  role: 'admin' | 'user' | 'guest';
+}
+
+@Component({
+  selector: 'app-control-flow',
+  standalone: true,
+  template: `
+    <div class="max-w-4xl mx-auto space-y-8 animate-fade-in">
+      
+      <div class="pb-6 border-b border-[#2a2d35]">
+        <h2 class="text-3xl font-bold text-white mb-2">Modern Control Flow</h2>
+        <p class="text-gray-400">Cleaner, faster, built-in template syntax.</p>
+      </div>
+
+      <!-- @if Demo -->
+      <div class="p-6 bg-[#181a1f] border border-[#2a2d35] rounded-xl shadow-lg">
+        <h3 class="font-semibold text-lg text-white mb-4 flex items-center gap-2">
+          <span class="text-pink-500 font-mono">&#64;if / &#64;else</span>
+        </h3>
+        
+        <div class="flex items-center gap-4 mb-4">
+          <button (click)="toggleLogin()" 
+            class="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            [class.bg-pink-600]="isLoggedIn()"
+            [class.text-white]="isLoggedIn()"
+            [class.bg-[#2a2d35]]="!isLoggedIn()"
+            [class.text-gray-300]="!isLoggedIn()"
+          >
+            Toggle Login State
+          </button>
+        </div>
+
+        <div class="p-4 rounded-lg border border-[#2a2d35] bg-[#0f1115] transition-all duration-300">
+          @if (isLoggedIn()) {
+            <div class="flex items-center gap-3 text-green-400">
+              <span class="text-xl">✅</span>
+              <span class="font-mono">User is logged in</span>
+            </div>
+          } @else {
+            <div class="flex items-center gap-3 text-red-400">
+              <span class="text-xl">🔒</span>
+              <span class="font-mono">Please log in to continue</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- @switch Demo -->
+      <div class="p-6 bg-[#181a1f] border border-[#2a2d35] rounded-xl shadow-lg">
+        <h3 class="font-semibold text-lg text-white mb-4 flex items-center gap-2">
+          <span class="text-purple-500 font-mono">&#64;switch</span>
+        </h3>
+        
+        <div class="flex gap-2 mb-6">
+          <button (click)="setRole('admin')" class="px-3 py-1 text-sm border border-[#2a2d35] rounded-full transition-colors" [class.bg-purple-600]="userRole() === 'admin'" [class.text-white]="userRole() === 'admin'" [class.text-gray-400]="userRole() !== 'admin'">Admin</button>
+          <button (click)="setRole('user')" class="px-3 py-1 text-sm border border-[#2a2d35] rounded-full transition-colors" [class.bg-blue-600]="userRole() === 'user'" [class.text-white]="userRole() === 'user'" [class.text-gray-400]="userRole() !== 'user'">User</button>
+          <button (click)="setRole('guest')" class="px-3 py-1 text-sm border border-[#2a2d35] rounded-full transition-colors" [class.bg-gray-600]="userRole() === 'guest'" [class.text-white]="userRole() === 'guest'" [class.text-gray-400]="userRole() !== 'guest'">Guest</button>
+        </div>
+
+        <div class="h-24 flex items-center justify-center rounded-lg border border-[#2a2d35] bg-[#0f1115]">
+          @switch (userRole()) {
+            @case ('admin') {
+              <div class="text-center animate-fade-in">
+                <p class="text-2xl mb-1">🛡️</p>
+                <p class="font-bold text-purple-400">Admin Dashboard Access</p>
+              </div>
+            }
+            @case ('user') {
+              <div class="text-center animate-fade-in">
+                <p class="text-2xl mb-1">👤</p>
+                <p class="text-blue-400">Standard User Profile</p>
+              </div>
+            }
+            @default {
+              <div class="text-center animate-fade-in">
+                <p class="text-2xl mb-1">👁️</p>
+                <p class="text-gray-500">Guest View Only</p>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      <!-- @for Demo -->
+      <div class="p-6 bg-[#181a1f] border border-[#2a2d35] rounded-xl shadow-lg">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold text-lg text-white flex items-center gap-2">
+            <span class="text-indigo-500 font-mono">&#64;for</span>
+            <span class="text-xs text-gray-500 font-normal ml-2">(Tracked by ID)</span>
+          </h3>
+          <div class="flex gap-2">
+            <button (click)="addUser()" class="px-3 py-1 bg-[#2a2d35] hover:bg-[#32363e] text-green-400 rounded text-sm transition-colors">+ Add</button>
+            <button (click)="shuffleUsers()" class="px-3 py-1 bg-[#2a2d35] hover:bg-[#32363e] text-yellow-400 rounded text-sm transition-colors">Shuffle</button>
+          </div>
+        </div>
+
+        <ul class="space-y-2">
+          @for (user of users(); track user.id; let i = $index, e = $even) {
+            <li 
+              class="p-3 rounded-lg border border-[#2a2d35] flex justify-between items-center transition-all hover:bg-[#22252b]"
+              [class.bg-[#0f1115]]="!e"
+              [class.bg-[#131519]]="e"
+            >
+              <div class="flex items-center gap-3">
+                <span class="text-gray-600 font-mono text-sm w-6">#{{ i + 1 }}</span>
+                <span class="font-medium text-gray-200">{{ user.name }}</span>
+                <span 
+                  class="text-[10px] uppercase font-bold px-2 py-0.5 rounded border border-opacity-20"
+                  [class.text-purple-400]="user.role === 'admin'"
+                  [class.border-purple-400]="user.role === 'admin'"
+                  [class.text-blue-400]="user.role === 'user'"
+                  [class.border-blue-400]="user.role === 'user'"
+                  [class.text-gray-400]="user.role === 'guest'"
+                  [class.border-gray-400]="user.role === 'guest'"
+                >
+                  {{ user.role }}
+                </span>
+              </div>
+              <button (click)="removeUser(user.id)" class="text-gray-600 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-500/10 transition-colors">×</button>
+            </li>
+          } @empty {
+            <li class="p-8 text-center text-gray-500 italic border border-dashed border-[#2a2d35] rounded-lg">
+              No users found via &#64;empty block. Try adding one!
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  `]
+})
+export class ControlFlowComponent {
+  isLoggedIn = signal(false);
+  userRole = signal<'admin' | 'user' | 'guest'>('guest');
+
+  users = signal<User[]>([
+    { id: 1, name: 'Alice', role: 'admin' },
+    { id: 2, name: 'Bob', role: 'user' },
+    { id: 3, name: 'Charlie', role: 'user' }
+  ]);
+
+  toggleLogin() {
+    this.isLoggedIn.update(v => !v);
+  }
+
+  setRole(role: 'admin' | 'user' | 'guest') {
+    this.userRole.set(role);
+  }
+
+  addUser() {
+    const newId = Math.max(...this.users().map(u => u.id), 0) + 1;
+    this.users.update(list => [
+      ...list,
+      { id: newId, name: `User ${newId}`, role: 'guest' }
+    ]);
+  }
+
+  removeUser(id: number) {
+    this.users.update(list => list.filter(u => u.id !== id));
+  }
+
+  shuffleUsers() {
+    this.users.update(list => [...list].sort(() => Math.random() - 0.5));
+  }
+}
