@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceDemoComponent } from './resource-demo.component';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('ResourceDemoComponent', () => {
     let component: ResourceDemoComponent;
@@ -7,7 +9,11 @@ describe('ResourceDemoComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ResourceDemoComponent]
+            imports: [ResourceDemoComponent],
+            providers: [
+                provideZonelessChangeDetection(),
+                provideHttpClient()
+            ]
         })
             .compileComponents();
 

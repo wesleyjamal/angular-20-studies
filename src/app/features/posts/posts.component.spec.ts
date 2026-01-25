@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LinkedSignalComponent } from './linked-signal.component';
+import { PostsComponent } from './posts.component';
 import { provideZonelessChangeDetection } from '@angular/core';
 
-describe('LinkedSignalComponent', () => {
-    let component: LinkedSignalComponent;
-    let fixture: ComponentFixture<LinkedSignalComponent>;
+describe('PostsComponent', () => {
+    let component: PostsComponent;
+    let fixture: ComponentFixture<PostsComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [LinkedSignalComponent],
+            imports: [PostsComponent],
             providers: [provideZonelessChangeDetection()]
         })
             .compileComponents();
 
-        fixture = TestBed.createComponent(LinkedSignalComponent);
+        fixture = TestBed.createComponent(PostsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

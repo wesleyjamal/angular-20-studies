@@ -25,5 +25,10 @@ export const routes: Routes = [
         path: 'resource',
         loadComponent: () => import('./features/resource/resource-demo.component').then(m => m.ResourceDemoComponent),
         title: 'Angular 20 · Resource API'
+    },
+    {
+        path: 'posts',
+        loadComponent: () => import('./features/posts/posts.component').then(m => m.PostsComponent),
+        title: 'Angular 20 · Posts API'
     }
 ];

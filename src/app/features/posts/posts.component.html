@@ -1,0 +1,61 @@
+<div class="max-w-4xl mx-auto space-y-8 animate-fade-in pb-12">
+
+    <div class="pb-6 border-b border-[#2a2d35] flex justify-between items-center">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Posts API</h2>
+            <p class="text-gray-400">Consuming JSONPlaceholder using Angular Resource API.</p>
+        </div>
+
+        <button (click)="postsResource.reload()"
+            class="px-4 py-2 bg-[#2a2d35] hover:bg-[#32363e] text-white rounded-lg flex items-center gap-2 transition-colors"
+            [disabled]="postsResource.isLoading()">
+            <span [class.animate-spin]="postsResource.isLoading()">↻</span>
+            {{ postsResource.isLoading() ? 'Reloading...' : 'Reload Posts' }}
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    @if (postsResource.isLoading()) {
+    <div class="grid gap-4">
+        @for (i of [1,2,3,4,5]; track i) {
+        <div class="p-6 bg-[#181a1f] border border-[#2a2d35] rounded-xl h-24 animate-pulse">
+            <div class="h-4 bg-[#2a2d35] rounded w-1/4 mb-4"></div>
+            <div class="h-3 bg-[#2a2d35] rounded w-3/4"></div>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (postsResource.error()) {
+    <div class="p-6 bg-red-900/10 border border-red-500/20 rounded-xl text-red-400 flex items-center gap-3">
+        <span class="text-2xl">⚠️</span>
+        <span>Failed to load posts: {{ postsResource.error() }}</span>
+    </div>
+    }
+
+    <!-- Success State (Data) -->
+    @if (postsResource.value()) {
+    <div class="grid gap-4">
+        @for (post of postsResource.value(); track post.id) {
+        <div class="p-6 bg-[#181a1f] border border-[#2a2d35] rounded-xl hover:border-blue-500/30 transition-all group">
+            <div class="flex items-start gap-4">
+                <div
+                    class="h-10 w-10 min-w-10 rounded-full bg-[#2a2d35] flex items-center justify-center text-gray-400 font-mono text-sm">
+                    #{{ post.id }}
+                </div>
+                <div>
+                    <h3
+                        class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors capitalize">
+                        {{ post.title }}
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        {{ post.body }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>
