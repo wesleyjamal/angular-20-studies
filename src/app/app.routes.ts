@@ -20,5 +20,10 @@ export const routes: Routes = [
         path: 'control-flow',
         loadComponent: () => import('./features/control-flow/control-flow.component').then(m => m.ControlFlowComponent),
         title: 'Angular 20 · Control Flow'
+    },
+    {
+        path: 'resource',
+        loadComponent: () => import('./features/resource/resource-demo.component').then(m => m.ResourceDemoComponent),
+        title: 'Angular 20 · Resource API'
     }
 ];
