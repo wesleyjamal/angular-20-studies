@@ -30,5 +30,10 @@ export const routes: Routes = [
         path: 'posts',
         loadComponent: () => import('./features/posts/posts.component').then(m => m.PostsComponent),
         title: 'Angular 20 · Posts API'
+    },
+    {
+        path: 'address',
+        loadComponent: () => import('./features/address/address.component').then(m => m.AddressFormComponent),
+        title: 'Angular 20 · Endereço'
     }
 ];
